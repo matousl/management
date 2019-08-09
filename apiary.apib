@@ -77,27 +77,7 @@ Route name: apiUsersDetail
 
 # Data Structures
 
-## Contract (object)
 
-### Properties
-
-+ code: PPK-39f/82/19 (string) - pokus
-+ Project_id: (number)
-+ type: C (string) - typ smlouva/C oblast/A
-+ Subject: (string) - typ smlouva/C oblast/A
-+ Price: 14578 (number) - cena ve smlouvě
-+ contractor: 
-+ Project_name:
-
-## ContractEDIT (object)
-
-### Properties
-
-+ idproject: 147 (number) - test
-+ code: 15457 OKB470058 - test
-+ subject: testování (string) - testování
-+ contractor: testování (string) - pokus
-+ price: 467.30 (number)
 
 ### Properties
 
@@ -117,6 +97,38 @@ Uživatelské role
 + date_to: 27-11-2021  (date) - platnost projektu do, může být prázdné
 + type: 0  (number) (0/interní, 1/administrovaný, 2/kombinovaný)
 + ekis: 0 (number) - (0/Aktivní 1/neaktivní 2/není, zdali má projekt propojení z EKIS)
+
+## ManItem (object)
+"managementová" položka - kombinace smlouvy a oblasti - slouží pro zobrazování
+
+### Properties
+
++ code: PPK-39f/82/19 (string) - pokus
++ Project_id: 15457 (number)
++ type: C (string) - typ smlouva/C oblast/A
++ Subject: (string) - typ smlouva/C oblast/A
++ Price: 14578 (number) - cena ve smlouvě
++ contractor: Jirka Petřík (string) - zpracovatel
++ Project_name: 
+
+
+
+
+
+## Contract (object)
+
+## ManArea (object)
+
+
+## ContractEDIT (object)
+
+### Properties
+
++ idproject: 147 (number) - test
++ code: 15457 OKB470058 - test
++ subject: testování (string) - testování
++ contractor: testování (string) - pokus
++ price: 467.30 (number)
 
 ## ActivityEdit (object)
 
