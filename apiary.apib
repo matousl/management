@@ -1,0 +1,140 @@
+FORMAT: 1A
+HOST: http://webgis.nature.cz/aopkrest/manact/
+
+# AOPK ČR - Management API 
+
+## EMAN - detail uživatele [/users/{user_id}]
+
+Route name: apiUsersDetail
+
++ Parameters
+    + app_id: 101 (number) - kód aplikace 
+    + user_id: 1 (number) - id uživatele 
+
+### Přehled dotazů [GET]
+
++ Response 200 (application/json)
+
+            {
+                "user_id":1,
+                "name":"Jm\u00e9no1",
+                "surname":"P\u0159\u00edjmen\u00ed1",
+                "title_before":"",
+                "title_after":"",
+                "email":"jmeno1.prijmeni1@nature.cz",
+                "activity":1,
+                "internal":1,
+                "role_ids":"1,2,3"
+            }
+
+## EMAN - projekty [/users/{user_id}/roles/]
+- výpis rolí daného uživatele
+
++ Parameters
+    + app_id: 101 (number) - kód aplikace 
+    + user_id: 1 (number) - id uživatele 
+
+### Výpis projektů [GET]
+
++ Response 200 (application/json)
+
+    + Attributes (array[Projekt])
+    + Attributes (array[Projekt])
+
+### Přidat nový projekt [POST]
+
++ Request 200 (application/json)
+
+    + Attributes (Project)
+
++ Response 201 (application/json)
+
+  + result_id: 0 (number) - výsledek, operace
+
+### Upravit  nový projekt [PATCH]
+
++ Request 200 (application/json)
+
+     + Attributes (Project)
+
++ Response 201 (application/json)
+
+    + result_id: 0 (number) - výsledek, operace
+
+## EMAN - činnosti [/users/{user_id}/roles/]
+- výpis rolí daného uživatele
+
++ Parameters
+    + app_id: 101 (number) - kód aplikace 
+    + user_id: 1 (number) - id uživatele 
+
+### Výpis projektů [GET]
+
++ Response 200 (application/json)
+
+    + Attributes (array[ActivityGET])
+    + Attributes (array[ActivityGET])
+
+# Data Structures
+
+## Contract (object)
+
+### Properties
+
++ code: PPK-39f/82/19 (string) - pokus
++ Project_id: (number)
++ type: C (string) - typ smlouva/C oblast/A
++ Subject: (string) - typ smlouva/C oblast/A
++ Price: 14578 (number) - cena ve smlouvě
++ contractor: 
++ Project_name:
+
+## ContractEDIT (object)
+
+### Properties
+
++ idproject: 147 (number) - test
++ code: 15457 OKB470058 - test
++ subject: testování (string) - testování
++ contractor: testování (string) - pokus
++ price: 467.30 (number)
+
+### Properties
+
+## Role (object)
+Uživatelské role
+### Properties
++ role_id: 1 (string) - id role
++ role_name: Mapovatel (string) - název role
++ role_code: M (string) - kód role - pro zkrácení a tlačítka 
+
+## Project (object)
+
+### Properties
++ name: Můj projekt 1 (string) - název projektu 
++ code: OKB470058 (string) - kod projektu
++ date_from: 27-07-2019 (date) - platnost projektu od, může být prázdné
++ date_to: 27-11-2021  (date) - platnost projektu do, může být prázdné
++ type: 0  (number) (0/interní, 1/administrovaný, 2/kombinovaný)
++ ekis: 0 (number) - (0/Aktivní 1/neaktivní 2/není, zdali má projekt propojení z EKIS)
+
+## ActivityEdit (object)
+
+činnosti pro vkládání a úpravu
+
+### Properties
++ contract_id: 1577 (number) -  id smlouvy
++ activity_id: 144 (number) - id činnosti
++ activity_cat_id: 18 (number) - kategori činnosti
++ year: 2018 (number) - rok
++ price: 57878.487 (number) - cena
++ amount: 15787,17 (number) - množství
++ note: Odvozit klestí (string) - poznámka
+
+## ContractCIS
+
+### Properties
+
++ name
++ contract_id
++ Kosení těžkou mechanizací
