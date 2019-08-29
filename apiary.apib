@@ -61,8 +61,14 @@ Route name: apiUsersDetail
 
     + result_id: 0 (number) - výsledek, operace
 
-## EMAN - činnosti [/users/{user_id}/roles/]
-- výpis rolí daného uživatele
+## Seznam činností [/activities/]
+- vrátí  seznam všech činností - z intranetu - slouží jako číselník
+- bude vracet celý číselník
+
+
+## Seznam projektů [/eman/projects/]
+- seznam všech projektů
+- parametry - filtr
 
 + Parameters
     + app_id: 101 (number) - kód aplikace 
@@ -76,8 +82,6 @@ Route name: apiUsersDetail
     + Attributes (array[ActivityGET])
 
 # Data Structures
-
-
 
 ### Properties
 
@@ -104,16 +108,12 @@ Uživatelské role
 ### Properties
 
 + code: PPK-39f/82/19 (string) - pokus
-+ Project_id: 15457 (number)
++ project_id: 15457 (number)
 + type: C (string) - typ smlouva/C oblast/A
-+ Subject: (string) - typ smlouva/C oblast/A
-+ Price: 14578 (number) - cena ve smlouvě
++ subject: (string) - typ smlouva/C oblast/A
++ price: 14578 (number) - cena ve smlouvě
 + contractor: Jirka Petřík (string) - zpracovatel
 + Project_name: 
-
-
-
-
 
 ## Contract (object)
 
