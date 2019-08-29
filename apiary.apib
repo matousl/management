@@ -1,11 +1,10 @@
 FORMAT: 1A
-HOST: http://webgis.nature.cz/aopkrest/manact/
+HOST: http://webgis.nature.cz/aopkrest/eman/
 
 # AOPK ČR - Management API 
 
 ## EMAN - detail uživatele [/users/{user_id}]
-
-Route name: apiUsersDetail
+- informace o uživateli
 
 + Parameters
     + app_id: 101 (number) - kód aplikace 
@@ -27,52 +26,84 @@ Route name: apiUsersDetail
                 "role_ids":"1,2,3"
             }
 
-## EMAN - projekty [/users/{user_id}/roles/]
+## EMAN - Výpis rolí [/users/{user_id}/roles/]
 - výpis rolí daného uživatele
+- admin
+- superedit - přidává/edituje smlouvy za projekty přidělené jeho RP
+- edit - přidavá/edituje opatření za smlouvy pro své RP
+- auditor - všechno vidí, nemůže editovat nic
+- read - vidí pouze své RP, nemůže editovat nic
 
 + Parameters
-    + app_id: 101 (number) - kód aplikace 
     + user_id: 1 (number) - id uživatele 
 
-### Výpis projektů [GET]
+### Přehled rolí
 
 + Response 200 (application/json)
 
-    + Attributes (array[Projekt])
-    + Attributes (array[Projekt])
-
-### Přidat nový projekt [POST]
-
-+ Request 200 (application/json)
-
-    + Attributes (Project)
-
-+ Response 201 (application/json)
-
-  + result_id: 0 (number) - výsledek, operace
-
-### Upravit  nový projekt [PATCH]
-
-+ Request 200 (application/json)
-
-     + Attributes (Project)
-
-+ Response 201 (application/json)
-
-    + result_id: 0 (number) - výsledek, operace
 
 ## Seznam činností [/activities/]
 - vrátí  seznam všech činností - z intranetu - slouží jako číselník
 - bude vracet celý číselník
 
 
-## Seznam projektů [/eman/projects/]
-- seznam všech projektů
+
+
+## EMAN - Seznam projektů [/projects/]
+- výpis projektů
+
+### Výpis projektů [GET]
+
++ Response 200 (application/json)
+    + Attributes (array[Project])
+
+
+
+
+## EMAN - Seznam projektů EKIS [projects?ekisid={ekis_id}]
+- pouze admin
+- přidání nového projektu z EKIS - tedy umožňuje přidat pouze projekty které již jsou zadané v ekisu
+- přidat regionální pracoviště(včetně ústředí), pro daný projekt - tato reg pracoviště budou moci přidávat oblasti a smlouvy
+- ekisid - pokud je vyplněné ekisid - tak si api šáhne do view z EKIS s informacema o projektu
+- projectType - (1,2,3) interní, kombinovaný, aministrovaný
+    - Kontrola
+        - může být pouze projectType 1,2
+
+
+### Přidat projekt z EKIS [POST]
+
++ Request 200 (application/json)
+{
+    + ekis_id: 101478 (number) - kód ekis - zbylé
+    + reg_id: 1, 14, 16 (array [number]) - id regionálních pracovišť
+}
+    
+
+### Upravit projekt z EKIS [PATCH]
+- je může 
++ Request 200 (application/json)
+
+ {
+    + reg_id: 1, 14, 16 (array [number]) - id regionálních pracovišť
+}
+
++ Response 201 (application/json)
+
+    + result_id: 0 (number) - výsledek uložení nového projektu - 0- v pořádku, 1-neuloženo - kód projektu již existuje
+
+
+
+## Activity
+
+## Seznam projektů [/projects/]
+- seznam všech projektů 
 - parametry - filtr
 
 + Parameters
     + app_id: 101 (number) - kód aplikace 
     + user_id: 1 (number) - id uživatele 
+    
+    
 
 ### Výpis projektů [GET]
 
@@ -97,10 +128,11 @@ Uživatelské role
 ### Properties
 + name: Můj projekt 1 (string) - název projektu 
 + code: OKB470058 (string) - kod projektu
-+ date_from: 27-07-2019 (date) - platnost projektu od, může být prázdné
-+ date_to: 27-11-2021  (date) - platnost projektu do, může být prázdné
-+ type: 0  (number) (0/interní, 1/administrovaný, 2/kombinovaný)
-+ ekis: 0 (number) - (0/Aktivní 1/neaktivní 2/není, zdali má projekt propojení z EKIS)
++ date_from: 27-07-2019 (date, optional) - platnost projektu od, může být prázdné
++ date_to: 27-11-2021  (date, optional) - platnost projektu do, může být prázdné
++ type: 0  (number) - typ projektu  0/interní, 1/administrovaný, 2/kombinovaný
++ ekis_id: 0 (number)  - 0/neaktivní 1/Aktivní 2/není, zdali má projekt propojení z EKIS
++ reg_id: 1, 14, 16 (array [number]) - id regionálních pracovišť
 
 ## ManItem (object)
 "managementová" položka - kombinace smlouvy a oblasti - slouží pro zobrazování
@@ -121,6 +153,10 @@ Uživatelské role
 
 
 ## ContractEDIT (object)
+
+## Activity
+
+
 
 ### Properties
 
