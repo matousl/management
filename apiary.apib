@@ -7,7 +7,6 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
 - informace o uživateli
 
 + Parameters
-    + app_id: 101 (number) - kód aplikace 
     + user_id: 1 (number) - id uživatele 
 
 ### Přehled dotazů [GET]
@@ -35,7 +34,7 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
 - read - vidí pouze své RP, nemůže editovat nic
 
 + Parameters
-    + user_id: 1 (number) - id uživatele 
+    + user_id: 1 (number) - id uživatele
 
 ### Přehled rolí
 
@@ -59,38 +58,33 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
 ### Přidat projekt [POST]
 
 + Request 200 (application/json)
-{
-    + ekis_id: 101478 (number) - kód ekis - zbylé
-    + reg_id: 1, 14, 16 (array [number]) - id regionálních pracovišť
-}
+        {
+            + ekis_id: 101478 (number) - kód ekis - zbylé
+            + reg_id: 1, 14, 16 (array [number]) - id regionálních pracovišť
+        }
     
 
 ### Upravit projekt[PATCH]
 + Request 200 (application/json)
 
- {
-    + reg_id: 1, 14, 16 (array [number]) - id regionálních pracovišť
-}
+        {
+            + reg_id: 1, 14, 16 (array [number]) - id regionálních pracovišť
+        }
 
-
-
-
-
-
-
-
-## EMAN - Seznam projektů - Ekis [projects?ekisid={ekis_id}]
+## EMAN - Seznam projektů - Ekis [/projects?ekisid={ekis_id}]
 - pouze admin
 - přidání nového projektu z EKIS - tedy umožňuje přidat pouze projekty které již jsou zadané v ekisu
 - přidat regionální pracoviště(včetně ústředí), pro daný projekt - tato reg pracoviště budou moci přidávat oblasti a smlouvy
 - ekisid - pokud je vyplněné ekisid - tak si api šáhne do view z EKIS s informacema o projektu
 - projectType - (1,2,3) interní, kombinovaný, aministrovaný
-    - Kontrola
-        - může být pouze projectType 1,2
+- Kontrola - může být pouze projectType 1,2
+
++ Parameters
+    + ekis_id: 101114 (number, optional) - id por
 
 
 ### Přidat projekt z EKIS [POST]
-
+- přidá nový ekis projekt - na pozadí zavola
 + Request 200 (application/json)
 {
     + ekis_id: 101478 (number) - kód ekis - zbylé
@@ -101,13 +95,17 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
 ### Upravit projekt z EKIS [PATCH]
 + Request 200 (application/json)
 
- {
-    + reg_id: 1, 14, 16 (array [number]) - id regionálních pracovišť
-}
+        {
+            + reg_id: 1, 14, 16 (array [number]) - id regionálních pracovišť
+        }
 
 + Response 201 (application/json)
 
     + result_id: 0 (number) - výsledek uložení nového projektu - 0- v pořádku, 1-neuloženo - kód projektu již existuje
+
+
+## EMAN - Seznam položek  [/projekty/{proj_id}/items/]
+- seznam položek, 
 
 
 
@@ -200,7 +198,6 @@ Uživatelské role
 ## ContractCIS
 
 ### Properties
-
 + name
 + contract_id
 + Kosení těžkou mechanizací
