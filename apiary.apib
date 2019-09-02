@@ -47,8 +47,6 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
 - bude vracet celý číselník
 
 
-
-
 ## EMAN - Seznam projektů [/projects/]
 - výpis projektů
 
@@ -58,9 +56,30 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
     + Attributes (array[Project])
 
 
+### Přidat projekt [POST]
+
++ Request 200 (application/json)
+{
+    + ekis_id: 101478 (number) - kód ekis - zbylé
+    + reg_id: 1, 14, 16 (array [number]) - id regionálních pracovišť
+}
+    
+
+### Upravit projekt[PATCH]
++ Request 200 (application/json)
+
+ {
+    + reg_id: 1, 14, 16 (array [number]) - id regionálních pracovišť
+}
 
 
-## EMAN - Seznam projektů EKIS [projects?ekisid={ekis_id}]
+
+
+
+
+
+
+## EMAN - Seznam projektů - Ekis [projects?ekisid={ekis_id}]
 - pouze admin
 - přidání nového projektu z EKIS - tedy umožňuje přidat pouze projekty které již jsou zadané v ekisu
 - přidat regionální pracoviště(včetně ústředí), pro daný projekt - tato reg pracoviště budou moci přidávat oblasti a smlouvy
@@ -80,7 +99,6 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
     
 
 ### Upravit projekt z EKIS [PATCH]
-- je může 
 + Request 200 (application/json)
 
  {
