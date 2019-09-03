@@ -36,9 +36,12 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
 + Parameters
     + user_id: 1 (number) - id uživatele
 
-### Přehled rolí
+### Přehled rolí [GET]
 
 + Response 200 (application/json)
+
+    + Attributes (array[Role])
+    + Attributes (array[Role])
 
 
 ## Seznam činností [/activities/]
@@ -52,28 +55,63 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
 ### Výpis projektů [GET]
 
 + Response 200 (application/json)
+
+    + Attributes (array[Project])
     + Attributes (array[Project])
 
-
-
--------
-### Přidat projekt -  [POST]
-
-+ Request 200 (application/json)
-        {
-
-            + reg_id: 1, 14, 16 (array [number]) - id regionálních pracovišť
-        }
-
-
-## EMAN - Projekt Normal [/projects/normal/{project_id}]
+## EMAN - Detail projektu [/projects/{proj_id}]
 
 + Parameters
-    + project_id: 101114 (number, optional) - id projektu z EKIS - jedná se o id z EKIS DB
+    + proj_id: 101114 (number) - id projektu 
 
+### Smazání projektu [DELETE]
 
-## EMAN - Projekt Ekis [/projects/ekis/{ekis_id}]
-- Přídání a úprava ekis projektu
++ Request 200 (application/json)
+
+        {
+            + proj_id: 101114 (number) - id projektu (primární klíč z databáze)
+        }
+
++ Response 201 (application/json)
+
+            {
+                + result_id: 0 (number) - výsledek operace 
+            }
+
+## EMAN - Projekt Administrovaný [/projects/administer/]
+- pro přidání nového projektu
+
+### Přidat nový projekt  [POST]
+
++ Request 200 (application/json)
+
+    + Attributes (array[Project])
+
++ Response 201 (application/json)
+
+            {
+                + result_id: 0 (number) - výsledek operace
+            }
+
+## EMAN - Projekt Administrovaný [/projects/administer/{proj_id}]
+
++ Parameters
+    + proj_id: 101114 (number) - id projektu (primární klíč z databáze)
+
+### Změna projektu  [PATCH]
+
++ Request 200 (application/json)
+
+    + Attributes (array[Project])
+
++ Response 201 (application/json)
+
+        {
+            + result_id: 0 (number) - výsledek operace
+        }
+
+## EMAN - Projekt z Ekis [/projects/ekis/{ekis_id}]
+- Přídání a úprava ekis projektu - respektive - interní a kombinovaný projekt
 - přidání nového projektu z EKIS - tedy umožňuje přidat pouze projekty které již jsou zadané v aplikaci ekisu
 - přidat regionální pracoviště(včetně ústředí), pro daný projekt - tato reg pracoviště budou moci přidávat oblasti a smlouvy
 - ekisid - pokud je vyplněné ekisid - tak si api šáhne do view z EKIS s informacema o projektu
@@ -83,39 +121,38 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
 + Parameters
     + ekis_id: 101114 (number) - id projektu z EKIS - jedná se o id z EKIS DB
 
-------
-
-### Přidat projekt z EKIS [POST]
-- přidá nový ekis projekt - 
+### Přidat projekt [POST]
+- přidá nový projekt z DB EKIS
 + Request 200 (application/json)
-{
-    + ekis_id: 101478 (number) - kód ekis - zbylé
-    + reg_id: 1, 14, 16 (array [number]) - id regionálních pracovišť
-}
+
+        {
+            + ekis_id: 101478 (number) - kód ekis - zbylé
+            + reg_id: 1, 14, 16 (array [number]) - id regionálních pracovišť
+            + type: 0  (number) - typ projektu  0/interní - pouze ekis - není možné editovat, 2/kombinovaný - data z ekis i možné přidávání vlastních smluv a oblastí
+        }
+        
++ Response 201 (application/json)
+
+        {
+            + result_id: 0 (number) - výsledek operace
+        }
 
 ### Upravit projekt [PATCH]
+- úpravy regionálních pracovišť a hlavně možnost nastavit zdali sychronizovat data o projektu a smlouvách z ekis
+
 + Request 200 (application/json)
 
         {
             + reg_id: 1, 14, 16 (array [number]) - id regionálních pracovišť
-            + 
-            
+            + ekis_synch: 0 (number) - nastavení zdali se je synchronizace aktivní či nikoliv
+            + type: 0  (number) - typ projektu  0/interní - pouze ekis, 2/kombinovaný - ekis i manuál
         }
-
-    
-
-### Upravit projekt z EKIS [PATCH]
-+ Request 200 (application/json)
-
-        {
-            + reg_id: 1, 14, 16 (array [number]) - id regionálních pracovišť
-        }
-
+        
 + Response 201 (application/json)
-        {
-            + result_id: 0 (number) - výsledek uložení nového projektu - 0- v pořádku, 1-neuloženo - kód projektu již existuje
-        }
 
+        {
+            + result_id: 0 (number) - výsledek operace
+        }
 
 
 ## EMAN - Seznam managementových položek  [/projects/{proj_id}/ManItems/]
@@ -131,8 +168,9 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
 
 + Response 201 (application/json)
 
-    + result_id: 0 (number) - výsledek uložení nového projektu - 0- v pořádku, 1-neuloženo - kód projektu již existuje
-
+        {
+            + result_id: 0 (number) - výsledek operace
+        }
 
 ## EMAN - Detail informací o managemantové položce  [/projects/{proj_id}/ManItems/{item_id}]
 - výpis detatailních infomrací o managamentové položce
@@ -140,18 +178,20 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
 ### Vymazat managementovou položku [DELETE]
 - proběhne kontrola: Nesmí být položka, která imporovaná z EKIS, a nesmí mít přidané žádná opatření
 
-+ Request 200 (application/json)
++ Response 201 (application/json)
 
         {
-            + reg_id: 1, 14, 16 (array [number]) - id regionálních pracovišť
+            + result_id: 0 (number) - výsledek uložení nového projektu - 0- v pořádku, 1-neuloženo - kód projektu již existuje
         }
 
 ## EMAN - Seznam opatření pro managemetovou položku  [/projects/{proj_id}/items/{item_id}/measures]
 - výpis přehledu opatření pro danou managementovou položku
 
+
+
+
 ### přidání nového opatření [POST]
 - přidání nového opatření
-
 
 ## EMAN - detail informací o opatření  [/projects/{proj_id}/items/{item_id}/measures/measure_id]
 - seznam opatření pro konkrétní managementovou položku
@@ -169,10 +209,10 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
 
 + Request 200 (application/json)
 
-    {
-        + ekis_id: 101478 (number) - kód ekis - zbylé
-        + reg_id: 1, 14, 16 (array [number]) - id regionálních pracovišť
-    }
+        {
+            + ekis_id: 101478 (number) - kód ekis - zbylé
+            + reg_id: 1, 14, 16 (array [number]) - id regionálních pracovišť
+        }
 
 ## EMAN - seznam smluv na projektu  [/projects/{proj_id}/contracts/{contract_id}]
 
@@ -192,14 +232,17 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
 
 + Request 200 (application/json)
 
-    {
-        + ekis_id: 101478 (number) - kód ekis - zbylé
-        + reg_id: 1, 14, 16 (array [number]) - id regionálních pracovišť
-    }
+        {
+            + ekis_id: 101478 (number) - kód ekis - zbylé
+            + reg_id: 1, 14, 16 (array [number]) - id regionálních pracovišť
+        }
 
 ## EMAN - detail oblasti na projektu  [/projects/{proj_id}/contracts/{contract_id}]
+
 ### Seznam smluv [GET]
 
++ Parameters
+    + proj_id: 101114 (number) - id projektu (primární klíč z databáze)
 
 ### Upravit existující oblast [PATCH]
 - může být upraveno pouze u smluv přidaných manuálně - je zakázáno, upravovat smlouvy získané. 
@@ -212,17 +255,6 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
 
 # Data Structures
 
-### Properties
-
-## Role (object)
-Uživatelské role
-
-### Properties
-
-+ role_id: 1 (string) - id role
-+ role_name: Mapovatel (string) - název role
-+ role_code: M (string) - kód role - pro zkrácení a tlačítka 
-
 ## Project (object)
 
 ### Properties
@@ -231,10 +263,11 @@ Uživatelské role
 + code: OKB470058 (string) - kod projektu - zadává se ručně a nebo se získává z EKIS
 + date_from: 27-07-2019 (date, optional) - platnost projektu od, může být prázdné
 + date_to: 27-11-2021  (date, optional) - platnost projektu do, může být prázdné
-+ type: 0  (number) - typ projektu  0/interní - pouze ekis, 1/administrovaný - pouze manuální zadání, 2/kombinovaný - ekis i manuál
++ type: 0  (number) - typ projektu  0/interní - pouze ekis, 1/administrovaný - pouze manuální zadání, 2/kombinovaný - je v ekisu, ale je možné také přidávat smlouvy/oblasti manuálně
++ reg_id: 1, 14, 16 (array [number]) - pole id regionálních pracovišť, která mohou smlouvy a činnosti projektu editovat
 + ekis_id: 0 (number, optional)  - id z db EKIS - pouze pokud je projekt z EKIS
 + ekis_synch: 1 (number, optional) - synchronizace dat z EKIS 0 - neaktivní, 1-aktivní
-+ reg_id: 1, 14, 16 (array [number]) - pole id regionálních pracovišť, která mohou smlouvy a činnosti projektu editovat
+
 
 ## ManItem (object)
 "managementová" položka - kombinace smlouvy a oblasti
@@ -242,7 +275,7 @@ Uživatelské role
 ### Properties
 
 + code: PPK-39f/82/19 (string) - pokus
-+ project_id: 15457 (number)
++ proj_id: 15457 (number)
 + type: C (string) - typ smlouva/C oblast/A
 + ekis_import:0 (number) - importováno z Ekisu
 + subject: (string) - typ smlouva/C oblast/A
@@ -265,7 +298,7 @@ Opatření
 
 ### Properties
 
-+ idproject: 147 (number) - test
++ proj_id: 147 (number) - test
 + code: 15457 OKB470058 - test
 + subject: testování (string) - testování
 + contractor: testování (string) - pokus
@@ -284,9 +317,15 @@ Opatření
 + amount: 15787,17 (number) - množství
 + note: Odvozit klestí (string) - poznámka
 
-## ContractCIS
+
+## Role (object)
+Uživatelské role
+admin - administruje projekty
+superedit - přidává/edituje smlouvy za projekty přidělené jeho RP
+edit - přidavá/edituje opatření za smlouvy pro své RP
+auditor - všechno vidí, nemůže editovat nic
+read - vidí pouze své RP, nemůže editovat nic
 
 ### Properties
-+ name
-+ contract_id
-+ Kosení těžkou mechanizací
++ role_id: 1 (string) - id role
++ role_name: Admin (string) - název role
