@@ -73,7 +73,7 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
 
 
 ## EMAN - Projekt Ekis [/projects/ekis/{ekis_id}]
-- pouze admin
+- Přídání a úprava ekis projektu
 - přidání nového projektu z EKIS - tedy umožňuje přidat pouze projekty které již jsou zadané v aplikaci ekisu
 - přidat regionální pracoviště(včetně ústředí), pro daný projekt - tato reg pracoviště budou moci přidávat oblasti a smlouvy
 - ekisid - pokud je vyplněné ekisid - tak si api šáhne do view z EKIS s informacema o projektu
@@ -81,16 +81,9 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
 - Kontrola - může být pouze projectType 1,2
 
 + Parameters
-    + ekis_id: 101114 (number, optional) - id projektu z EKIS - jedná se o id z EKIS DB
+    + ekis_id: 101114 (number) - id projektu z EKIS - jedná se o id z EKIS DB
 
 ------
-### Upravit projekt[PATCH]
-+ Request 200 (application/json)
-
-        {
-            + reg_id: 1, 14, 16 (array [number]) - id regionálních pracovišť
-        }
-
 
 ### Přidat projekt z EKIS [POST]
 - přidá nový ekis projekt - 
@@ -99,6 +92,16 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
     + ekis_id: 101478 (number) - kód ekis - zbylé
     + reg_id: 1, 14, 16 (array [number]) - id regionálních pracovišť
 }
+
+### Upravit projekt [PATCH]
++ Request 200 (application/json)
+
+        {
+            + reg_id: 1, 14, 16 (array [number]) - id regionálních pracovišť
+            + 
+            
+        }
+
     
 
 ### Upravit projekt z EKIS [PATCH]
@@ -230,6 +233,7 @@ Uživatelské role
 + date_to: 27-11-2021  (date, optional) - platnost projektu do, může být prázdné
 + type: 0  (number) - typ projektu  0/interní - pouze ekis, 1/administrovaný - pouze manuální zadání, 2/kombinovaný - ekis i manuál
 + ekis_id: 0 (number, optional)  - id z db EKIS - pouze pokud je projekt z EKIS
++ ekis_synch: 1 (number, optional) - synchronizace dat z EKIS 0 - neaktivní, 1-aktivní
 + reg_id: 1, 14, 16 (array [number]) - pole id regionálních pracovišť, která mohou smlouvy a činnosti projektu editovat
 
 ## ManItem (object)
@@ -240,7 +244,7 @@ Uživatelské role
 + code: PPK-39f/82/19 (string) - pokus
 + project_id: 15457 (number)
 + type: C (string) - typ smlouva/C oblast/A
-+ ekis_import:0 (number) - import
++ ekis_import:0 (number) - importováno z Ekisu
 + subject: (string) - typ smlouva/C oblast/A
 + price: 14578 (number) - cena ve smlouvě
 + contractor: Jirka Petřík (string) - zpracovatel
