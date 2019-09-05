@@ -207,35 +207,74 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
      + Attributes (ManItem)
 
 
-
 ### Vymazat managementovou položku [DELETE]
+
 - proběhne kontrola: Nesmí být položka, která imporovaná z EKIS, a nesmí mít přidané žádná opatření
+
++ Request 200 (application/json)
+
+        {
+            + item_id: 101114 (number) - id managementové položky
+        }
 
 + Response 201 (application/json)
 
         {
-            + result_id: 0 (number) - výsledek uložení nového projektu - 0- v pořádku, 1-neuloženo - kód projektu již existuje
+            + result_id: 0 (number) - výsledek operace 
         }
-
-
 
 
 ## EMAN - Seznam opatření pro managemetovou položku  [/ManItems/{item_id}/measures]
 - výpis přehledu opatření pro danou managementovou položku
 
+
 ### přidání nového opatření [POST]
 - přidání nového opatření
+- proběhne kontrola: Nesmí být položka, která imporovaná z EKIS, a nesmí mít přidané žádná opatření
 
-## EMAN - detail informací o opatření  [/ManItems/{item_id}/measures/measure_id]
++ Request 200 (application/json)
+
+        {
+            + item_id: 101114 (number) - id managementové položky
+        }
+
++ Response 201 (application/json)
+
+        {
+            + result_id: 0 (number) - výsledek operace
+        }
+
+## EMAN - detail informací o opatření  [/ManItems/{item_id}/measures/{measure_id}]
 - seznam opatření pro konkrétní managementovou položku
 
-### úprava nového opatření [PATCH]
-- seznam opatření pro konkrétní smlouvu
++ Parameters
+    + item_id: 178788 (number) - id managementové položky
+    + measure_id: 178788 (number) - id managementové položky
+
+### Změna opatření  [PATCH]
+
++ Request 200 (application/json)
+
+     + Attributes (MeasureNew)
+
++ Response 201 (application/json)
+
+     + Attributes (Measure)
 
 ### Smazání vybraného opatření [DELETE]
 - pozor pokud je na to přivázaný zákres/y upozornění
 
++ Request 200 (application/json)
 
+        {
+            + measure_id: 101114 (number) - id projektu (primární klíč z databáze)
+        }
+
++ Response 201 (application/json)
+
+        {
+            + result_id: 0 (number) - výsledek operace 
+        }
 
 
 # Data Structures
@@ -244,7 +283,6 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
 
 + id: 178788 (number) - vniřní id projektu
 + include (ProjectNew)
-
 
 ## ProjectNew (object)
 
@@ -283,11 +321,17 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
 
 ## Measure
 
+- MeasureNew
+
 ### Properties
 
-## MeasureEdit (object)
++ measure_id: 178788 (number) - id_opatření
++ include (MeasureNew)
 
-Opatření
+## MeasureNew (object)
+
++ id: 178788 (number) - vniřní id projektu
++ include (ProjectNew)
 
 ### Properties
 + contract_id: 1577 (number) -  id smlouvy
@@ -298,9 +342,6 @@ Opatření
 + amount: 15787,17 (number) - množství
 + note: Odvozit klestí (string) - poznámka
 
-
-
-
 ## Role (object)
 Uživatelské role
 admin - administruje projekty
@@ -310,10 +351,5 @@ auditor - všechno vidí, nemůže editovat nic
 read - vidí pouze své RP, nemůže editovat nic
 
 ### Properties
-+ role_id: 1 (string) - id role
++ role_id: 1 (number) - id role
 + role_name: Admin (string) - název role
-
-## Activity
-Sezmam činností
-
-### Properties
