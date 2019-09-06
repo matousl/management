@@ -44,9 +44,17 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
     + Attributes (array[Role])
 
 
-## Seznam činností [/activities/]
+## Eman Činnosti [/activities/]
 - vrátí  seznam všech činností - z intranetu - slouží jako číselník
 - bude vracet celý číselník
+
+### Přehled činností [GET]
+
++ Response 200 (application/json)
+
+    + Attributes (array[Activity])
+    + Attributes (array[Activity])
+    + Attributes (array[Activity])
 
 
 ## EMAN - Seznam projektů [/projects/]
@@ -74,9 +82,9 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
 
 + Response 201 (application/json)
 
-        {
-            + result_id: 0 (number) - výsledek operace 
-        }
+            {
+                + result_id: 0 (number) - výsledek operace 
+            }
 
 ## EMAN - Projekt Administrovaný [/projects/administer/]
 - pro přidání nového projektu
@@ -278,6 +286,28 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
 
 # Data Structures
 
+## Role (object)
+Uživatelské role
+admin - administruje projekty
+superedit - přidává/edituje smlouvy za projekty přidělené jeho RP
+edit - přidavá/edituje opatření za smlouvy pro své RP
+auditor - všechno vidí, nemůže editovat nic
+read - vidí pouze své RP, nemůže editovat nic
+
+### Properties
++ role_id: 1 (number) - id role
++ role_name: Admin (string) - název role
+
+## Activity
+činnost - převzané z číselníku činností z intranetu
+
+### Properties
++ activity_id: 1752 (number) - id činnosti
++ activity_name: Výsadba dřevin (string) - název činnosti
++ note: PUPFL podsadba, dosadba dřevin (string) - poznámka
++ category: les (string) - kategorie
++ unit: ks (string)  -jednotka může být i m3
+
 ## Project (object)
 
 + id: 178788 (number) - vniřní id projektu
@@ -340,15 +370,3 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
 + price: 57878.487 (number) - cena
 + amount: 15787,17 (number) - množství
 + note: Odvozit klestí (string) - poznámka
-
-## Role (object)
-Uživatelské role
-admin - administruje projekty
-superedit - přidává/edituje smlouvy za projekty přidělené jeho RP
-edit - přidavá/edituje opatření za smlouvy pro své RP
-auditor - všechno vidí, nemůže editovat nic
-read - vidí pouze své RP, nemůže editovat nic
-
-### Properties
-+ role_id: 1 (number) - id role
-+ role_name: Admin (string) - název role
