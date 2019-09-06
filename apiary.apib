@@ -1,15 +1,15 @@
 FORMAT: 1A
 HOST: http://webgis.nature.cz/aopkrest/eman/
 
-# AOPK ČR - Management API 
+# AOPK ČR - Evidence managementových opatření (EMAN) - BackendAPI
 
-## EMAN - detail uživatele [/users/{user_id}]
+## Uživatel - detail [/users/{user_id}]
 - informace o uživateli
 
 + Parameters
     + user_id: 1 (number) - id uživatele 
 
-### Přehled dotazů [GET]
+### Výpis informací o uživateli [GET]
 
 + Response 200 (application/json)
 
@@ -25,7 +25,7 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
                 "role_ids":"1,2,3"
             }
 
-## EMAN - Výpis rolí [/users/{user_id}/roles/]
+## Uživatel - role [/users/{user_id}/roles/]
 - výpis rolí daného uživatele
 - admin
 - superedit - přidává/edituje smlouvy za projekty přidělené jeho RP
@@ -36,7 +36,7 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
 + Parameters
     + user_id: 1 (number) - id uživatele
 
-### Přehled rolí [GET]
+### Výpis seznamu rolí [GET]
 
 + Response 200 (application/json)
 
@@ -44,11 +44,11 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
     + Attributes (array[Role])
 
 
-## Eman Činnosti [/activities/]
+## Činnost - seznam [/activities/]
 - vrátí  seznam všech činností - z intranetu - slouží jako číselník
 - bude vracet celý číselník
 
-### Přehled činností [GET]
+### Výpis seznamu činností [GET]
 
 + Response 200 (application/json)
 
@@ -57,17 +57,17 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
     + Attributes (array[Activity])
 
 
-## EMAN - Seznam projektů [/projects/]
+## Projekt - seznam [/projects/]
 - výpis všech projektů
 
-### Výpis projektů [GET]
+### Výpis seznamu projektů [GET]
 
 + Response 200 (application/json)
 
     + Attributes (array[Project])
     + Attributes (array[Project])
 
-## EMAN - Detail projektu [/projects/{proj_id}]
+## Projekt - detail [/projects/{proj_id}]
 
 + Parameters
     + proj_id: 101114 (number) - id projektu 
@@ -85,10 +85,10 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
     + Attributes
         + result_id: 0 (number) - výsledek operace 
 
-## EMAN - Projekt Administrovaný [/projects/administer/]
+## Projekt - administrovaný [/projects/administer/]
 - pro přidání nového projektu
 
-### Přidat nový projekt  [POST]
+### Přidá projekt  [POST]
 
 + Request (application/json)
 
@@ -144,7 +144,6 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
 
     + Attributes
 
-        
 + Response 200 (application/json)
 
     + Attributes (Project)
@@ -181,7 +180,6 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
         {
             + Attributes (ManItem)
         }
-
 
 ## Managemantové položky - detail [/ManItems/{item_id}]
 - výpis detatailních infomrací o managamentové položce
