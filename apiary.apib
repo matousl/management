@@ -26,12 +26,7 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
             }
 
 ## Uživatel - role [/users/{user_id}/roles/]
-- výpis rolí daného uživatele
-- admin
-- superedit - přidává/edituje smlouvy za projekty přidělené jeho RP
-- edit - přidavá/edituje opatření za smlouvy pro své RP
-- auditor - všechno vidí, nemůže editovat nic
-- read - vidí pouze své RP, nemůže editovat nic
+- výpis rolí uživatele
 
 + Parameters
     + user_id: 1 (number) - id uživatele
@@ -45,7 +40,6 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
 
 ## Činnost - seznam [/activities/]
 - vrátí  seznam všech činností - z intranetu - slouží jako číselník
-- bude vracet celý číselník
 
 ### Vypsat seznam činností [GET]
 
@@ -56,12 +50,13 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
     + Attributes (array[Activity])
 
 ## Projekt - seznam [/projects/]
-- výpis všech projektů
+- všechny projekty - administrované, interní i kombinované viz typ projektu
 
 ### Vypsat seznam projektů [GET]
 
 + Response 200 (application/json)
 
+    + Attributes (array[Project])
     + Attributes (array[Project])
     + Attributes (array[Project])
 
@@ -83,7 +78,7 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
         + result_id: 0 (number) - výsledek operace 
 
 ## Projekt - administrovaný - seznam [/projects/administer/]
-- pro přidání nového projektu
+- projekty, které uživatelé zadávájí "manuálně"
 
 ### Přidat projekt  [POST]
 
@@ -111,15 +106,10 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
      + Attributes (Project)
 
 ## Projekt - ekis - seznam  [/projects/ekis/]
-- Přídání a úprava ekis projektu - respektive - interní a kombinovaný projekt
-- přidání nového projektu z EKIS - tedy umožňuje přidat pouze projekty které již jsou zadané v aplikaci ekisu
-- přidat regionální pracoviště(včetně ústředí), pro daný projekt - tato reg pracoviště budou moci přidávat oblasti a smlouvy
-- ekisid - pokud je vyplněné ekisid - tak si api šáhne do view z EKIS s informacema o projektu
-- projectType - (1,2,3) interní, kombinovaný, aministrovaný
+- projekty vybírané ze systému ekis 
 - Kontrola - může být pouze projectType 1,2
 
 ### Přidat projekt [POST]
-- přidá nový projekt z DB EKIS
 
 + Request (application/json)
 
@@ -146,11 +136,10 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
     + Attributes (Project)
 
 ## Managementové položky - seznam [/ManItems?proj_id={proj_id}&reg_id={reg_id}&code={code}]
-- seznam managementových položek (smluv, oblastí) - doplnit filter
-- filtrování funguje tak, že musí být vyplněn alespoň jeden parametr + pokud je vybrán projekt, pak je možné hledat pouze regionální pracoviště z projektu a pod...
+- seznam managementových položek (smluv, oblastí)
 
 ###  Vypsat managementové položky [GET]
-
+- filtrování funguje tak, že musí být vyplněn alespoň jeden parametr + pokud je vybrán projekt, pak je možné hledat pouze regionální pracoviště z projektu a pod...
 + Parameters
     + proj_id: 101114 (number, optional) - id projektu /primární klíč z databáze/
     + reg_id: 12 (number, optional) - id regionálního pracoviště
@@ -163,7 +152,6 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
     + Attributes (array[ManItem])
 
 ### Přidat managementovou položku [POST]
-- přidá nový projekt z DB EKIS
 
 + Request (application/json)
 
@@ -174,7 +162,6 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
     + Attributes (ManItem)
 
 ## Managemantové položky - detail [/ManItems/{item_id}]
-- výpis detatailních infomrací o managamentové položce
 
 + Parameters
     + item_id: 178788 (number) - id managementové položky
@@ -191,7 +178,7 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
 
 ### Smazat managementovou položku [DELETE]
 
-- proběhne kontrola: Nesmí být položka, která imporovaná z EKIS, a nesmí mít přidané žádná opatření
+- proběhne kontrola: Nesmí být položka, která je imporovaná z EKIS, a nesmí mít přidané žádná opatření
 
 + Request (application/json)
 
@@ -204,7 +191,7 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
         + result_id: 0 (number) - výsledek operace 
 
 ## Opatření - seznam [/ManItems/{item_id}/measures]
-- výpis přehledu opatření pro danou managementovou položku
+- výpis seznamu opatření pro danou managementovou položku
 
 + Parameters
     + item_id: 101114 (number) - id managementové položky
@@ -218,8 +205,6 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
     + Attributes (array[Measure])
 
 ### Přidat opatření [POST]
-- přidání nového opatření
-- proběhne kontrola: Nesmí být položka, která imporovaná z EKIS, a nesmí mít přidané žádná opatření
 
 + Request (application/json)
 
@@ -230,7 +215,6 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
     + Attributes (Measure)
 
 ## Opatření - detail  [/ManItems/{item_id}/measures/{measure_id}]
-- seznam opatření pro konkrétní managementovou položku
 
 + Parameters
     + item_id: 178788 (number) - id managementové položky
@@ -246,7 +230,7 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
     + Attributes (Measure)
 
 ### Smazat opatření [DELETE]
-- pozor pokud je na to přivázaný zákres/y upozornění
+- kontrola zdali nemá zákresy
 
 + Request (application/json)
 
@@ -273,7 +257,7 @@ read - vidí pouze své RP, nemůže editovat nic
 + role_name: Admin (string) - název role
 
 ## Activity
-činnost - převzané z číselníku činností z intranetu
+činnosti - převzané z číselníku činností z intranetu
 
 ### Properties
 + activity_id: 1752 (number) - id činnosti
@@ -282,12 +266,6 @@ read - vidí pouze své RP, nemůže editovat nic
 + category: les (string) - kategorie
 + unit: ks (string)  -jednotka může být i m3
 
-## Project (object)
-projekt s id
- 
-### Properties
-+ id: 178788 (number) - vniřní id projektu
-+ include (ProjectAdministerNew)
 
 ## ProjectAdministerNew (object)
 projekt bez ID
@@ -302,9 +280,16 @@ projekt bez ID
 + ekis_id: 0 (number, optional)  - id z db EKIS - pouze pokud je projekt z EKIS
 + ekis_synch: 1 (number, optional) - synchronizace dat z EKIS 0 - neaktivní, 1-aktivní
 
+## Project (object)
+projekt s id
+ 
+### Properties
++ id: 178788 (number) - vniřní id projektu
++ include (ProjectAdministerNew)
+
 ## ProjectEkisNew (object)
 projekt z EKIS
- 
+
 ### Properties
 + reg_id: 1, 14, 16 (array [number]) - id regionálních pracovišť
 + ekis_synch: 0 (number) - nastavení zdali se je synchronizace aktivní či nikoliv
@@ -325,19 +310,12 @@ projekt z EKIS
 + reg_id: 1, 14, 16 (array [number]) - id regionálních pracovišť přidělených ke smlouvě, oblasti - automaticky se přidávají ty co jsou na projektu
 
 ## ManItem (object)
-"managementová" položka - tedy smlouv a nebo oblast
+"managementová" položka - tedy smlouva nebo oblast
 
 ### Properties
 
 + item_id: 178788 (number) - id managementové položky
 + include (ManItemNew)
-
-## Measure (object)
-opatření včetně id
-
-### Properties
-+ include MeasureNew
-+ measure_id: 178788 (number) - id opatření
 
 
 ## MeasureNew (object)
@@ -351,3 +329,10 @@ opatření bez ID
 + price: 57878.487 (number) - cena
 + amount: 15787.17 (number) - množství
 + note: Odvozit klestí (string) - poznámka
+
+## Measure (object)
+opatření včetně id
+
+### Properties
++ include MeasureNew
++ measure_id: 178788 (number) - id opatření
