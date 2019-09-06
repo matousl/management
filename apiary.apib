@@ -74,28 +74,27 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
 
 ### Smazání projektu [DELETE]
 
-+ Request 200 (application/json)
++ Request (application/json)
 
-        {
-            + proj_id: 101114 (number) - id projektu (primární klíč z databáze)
-        }
+     + Attributes
+        + proj_id: 101114 (number) - id projektu primární klíč z databáze
+            
 
-+ Response 201 (application/json)
++ Response 200 (application/json)
 
-            {
-                + result_id: 0 (number) - výsledek operace 
-            }
+    + Attributes
+        + result_id: 0 (number) - výsledek operace 
 
 ## EMAN - Projekt Administrovaný [/projects/administer/]
 - pro přidání nového projektu
 
 ### Přidat nový projekt  [POST]
 
-+ Request 200 (application/json)
++ Request (application/json)
 
-    + Attributes (ProjectNew)
+    + Attributes (ProjectAdministerNew)
 
-+ Response 201 (application/json)
++ Response 200 (application/json)
 
     + Attributes (Project)
 
@@ -106,11 +105,11 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
 
 ### Změna projektu  [PATCH]
 
-+ Request 200 (application/json)
++ Request (application/json)
 
-     + Attributes (ProjectNew)
+     + Attributes (ProjectAdministerNew)
 
-+ Response 201 (application/json)
++ Response 200 (application/json)
 
      + Attributes (Project)
 
@@ -125,22 +124,15 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
 
 ### Přidat projekt [POST]
 - přidá nový projekt z DB EKIS
-+ Request 200 (application/json)
++ Request (application/json)
 
-        {
-            + ekis_id: 101478 (number) - kód ekis - interní id z databáze
-            + reg_id: 1, 14, 16 (array [number]) - id regionálních pracovišť
-            + type: 0  (number) - typ projektu  0/interní - pouze ekis - není možné editovat, 2/kombinovaný - data z ekis i možné přidávání vlastních smluv a oblastí
-        }
+        + Attributes (ProjectEkisNew)
         
-+ Response 201 (application/json)
++ Response 200 (application/json)
 
-        {
-            + Attributes (Project)
-        }
+    + Attributes (Project)
 
-
-## EMAN - Projekt z Ekis [/projects/ekis/{proj_id}]
+## Projekt z Ekis [/projects/ekis/{proj_id}]
 
 + Parameters
     + proj_id: 101114 (number) - id projektu (primární klíč z databáze)
@@ -148,22 +140,17 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
 ### Upravit projekt [PATCH]
 - úpravy regionálních pracovišť a hlavně možnost nastavit zdali sychronizovat data o projektu a smlouvách z ekis
 
-+ Request 200 (application/json)
++ Request (application/json)
 
-        {
-            + reg_id: 1, 14, 16 (array [number]) - id regionálních pracovišť
-            + ekis_synch: 0 (number) - nastavení zdali se je synchronizace aktivní či nikoliv
-            + type: 0  (number) - typ projektu  0/interní - pouze ekis, 2/kombinovaný - ekis i manuál
-        }
+    + Attributes
+
         
-+ Response 201 (application/json)
++ Response 200 (application/json)
 
-        {
-            + Attributes (Project)
-        }
+    + Attributes (Project)
+        
 
-
-## EMAN - Seznam managementových položek [/ManItems?proj_id={proj_id}&reg_id={reg_id}&code={code}]
+## Managementové položky - seznam [/ManItems?proj_id={proj_id}&reg_id={reg_id}&code={code}]
 - seznam managementových položek (smluv, oblastí) - doplnit filter
 - filtrování funguje tak, že musí být vyplněn alespoň jeden parametr + pokud je vybrán projekt, pak je možné hledat pouze regionální pracoviště z projektu a pod...
 
@@ -173,7 +160,7 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
     + code: PPK-39f/82/19 (string, optional) - řetězec pro vyhledání v kódech dané aplikace
 
 
-###  výpis managementových položek [GET]
+###  Výpis managementových položek [GET]
 
 + Response 200 (application/json)
 
@@ -185,20 +172,18 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
 ### Přidat managementovou položku [POST]
 - přidá nový projekt z DB EKIS
 
-+ Request 200 (application/json)
++ Request (application/json)
 
-        {
-            + Attributes (ManItemNew)   
-        }
-        
-+ Response 201 (application/json)
+    + Attributes (ManItemNew)   
+
++ Response 200 (application/json)
 
         {
             + Attributes (ManItem)
         }
 
 
-## EMAN - Detail informací o managemantové položce [/ManItems/{item_id}]
+## Managemantové položky - detail [/ManItems/{item_id}]
 - výpis detatailních infomrací o managamentové položce
 
 + Parameters
@@ -206,11 +191,11 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
 
 ### Změna projektu  [PATCH]
 
-+ Request 200 (application/json)
++ Request (application/json)
 
      + Attributes (ManItemNew)
 
-+ Response 201 (application/json)
++ Response 200 (application/json)
 
      + Attributes (ManItem)
 
@@ -219,13 +204,13 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
 
 - proběhne kontrola: Nesmí být položka, která imporovaná z EKIS, a nesmí mít přidané žádná opatření
 
-+ Request 200 (application/json)
++ Request (application/json)
 
         {
             + item_id: 101114 (number) - id managementové položky
         }
 
-+ Response 201 (application/json)
++ Response 200 (application/json)
 
         {
             + result_id: 0 (number) - výsledek operace 
@@ -239,13 +224,13 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
 - přidání nového opatření
 - proběhne kontrola: Nesmí být položka, která imporovaná z EKIS, a nesmí mít přidané žádná opatření
 
-+ Request 200 (application/json)
++ Request (application/json)
 
         {
             + item_id: 101114 (number) - id managementové položky
         }
 
-+ Response 201 (application/json)
++ Response 200 (application/json)
 
         {
             + result_id: 0 (number) - výsledek operace
@@ -260,24 +245,24 @@ HOST: http://webgis.nature.cz/aopkrest/eman/
 
 ### Změna opatření  [PATCH]
 
-+ Request 200 (application/json)
++ Request (application/json)
 
      + Attributes (MeasureNew)
 
-+ Response 201 (application/json)
++ Response 200 (application/json)
 
      + Attributes (Measure)
 
 ### Smazání vybraného opatření [DELETE]
 - pozor pokud je na to přivázaný zákres/y upozornění
 
-+ Request 200 (application/json)
++ Request (application/json)
 
         {
             + measure_id: 101114 (number) - id projektu (primární klíč z databáze)
         }
 
-+ Response 201 (application/json)
++ Response 200 (application/json)
 
         {
             + result_id: 0 (number) - výsledek operace 
@@ -308,12 +293,17 @@ read - vidí pouze své RP, nemůže editovat nic
 + category: les (string) - kategorie
 + unit: ks (string)  -jednotka může být i m3
 
+
+
 ## Project (object)
-
+projekt s id
+ 
+### Properties
 + id: 178788 (number) - vniřní id projektu
-+ include (ProjectNew)
++ include (ProjectAdministerNew)
 
-## ProjectNew (object)
+## ProjectAdministerNew (object)
+projekt bez ID
 
 ### Properties
 + name: Můj projekt 1 (string) - název projektu
@@ -325,6 +315,14 @@ read - vidí pouze své RP, nemůže editovat nic
 + ekis_id: 0 (number, optional)  - id z db EKIS - pouze pokud je projekt z EKIS
 + ekis_synch: 1 (number, optional) - synchronizace dat z EKIS 0 - neaktivní, 1-aktivní
 
+
+## ProjectEkisNew (object)
+projekt z EKIS
+ 
+### Properties
++ reg_id: 1, 14, 16 (array [number]) - id regionálních pracovišť
++ ekis_synch: 0 (number) - nastavení zdali se je synchronizace aktivní či nikoliv
++ type: 0  (number) - typ projektu  0/interní - pouze ekis, 2/kombinovaný - ekis i manuál
 
 ## ManItemNew (object)
 "managementová" položka - kombinace smlouvy a oblasti - nová pložka bez ID
@@ -349,18 +347,15 @@ read - vidí pouze své RP, nemůže editovat nic
 + include (ManItemNew)
 
 ## Measure
-
-- MeasureNew
-
+- opatření včetně id
 ### Properties
 
 + measure_id: 178788 (number) - id_opatření
 + include (MeasureNew)
 
 ## MeasureNew (object)
-
-+ id: 178788 (number) - vniřní id projektu
-+ include (ProjectNew)
+- opatření
+<!-- dsdsa -->
 
 ### Properties
 + contract_id: 1577 (number) -  id smlouvy
